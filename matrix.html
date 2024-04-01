@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <title>Calculator de matrice</title>
+   <style>
+     .hidden {
+       display: none;
+     }
+     </style>
+     <link rel="stylesheet" href="matrice-calculator.css" />
+</head>
+<body>
+  <header>
+    <h1>Calculator de matrice</h1>
+  </header>
+  <section>
+    <!-- Create the dropdown menu -->
+    <label for="operatie-selectare">Operation:</label>
+      <select name="operations" id="operatie-selectare">
+      <option value="">--Selecteaza o operatie--</option>
+      <option value="Adunare">Adunare</option>
+      <option value="Inmultire">Inmultire</option>
+      <option value="Transpunere">Transpunere</option>
+    </select>
+    <!-- div cu atributul "hidden" pentru adunarea matricelor-->
+    <div id="adunare" class="hidden">
+      <form>
+        <label for="linii1">Matrice 1: Linii:</label>
+        <input type="number" id="linii1" name="linii1" min="1">
+        <label for="coloane1">Matrice 1: Coloane:</label>
+        <input type="number" id="coloane1" name="coloane1" min="1"><br>
+        <label for="linii2">Matrice 2: Linii:</label>
+        <input type="number" id="linii2" name="linii2" min="1">
+        <label for="coloane2">Matrice 2: Coloane:</label>
+        <input type="number" id="coloane2" name="coloane2" min="1"><br>
+        <button type="button" onclick="CreeazaMatrice()">Creeaza Matrice</button>
+        <button type="button" onclick="AdunaMatrice()">Calculeaza</button>
+      </form>
+      <div id="matrice-input"></div>
+      <script>
+        let matrice1, matrice2, result, linii1, coloane1, linii2, coloane2;
+        function CreeazaMatrice(data) {
+          const linii1 = document.getElementById("linii1").value;
+          const coloane1 = document.getElementById("coloane1").value;
+          const linii2 = document.getElementById("linii2").value;
+          const coloane2 = document.getElementById("coloane2").value;
+
+          if (linii1 !== linii2 || coloane1 !== coloane2) {
+            alert("Matricele trebuie sa aiba aceleasi dimensiuni pentru a fi adunate.");
+            return;
+          }
+          if (linii1 < 1 || coloane1 < 1 || linii2 < 1 || coloane2 < 1) {
+            alert("Toate dimensiunile matricelor trebuie sa fie mai mari de 0.");
+            return;
+          }
+          const matriceInput = document.getElementById("matrice-input");
+          matriceInput.innerHTML = "";
+
+          matrice1 = [];
+          const matrice1Label = document.createElement("h2");
+          matrice1Label.innerText = "Matrice 1";
+          matriceInput.appendChild(matrice1Label);
+
+          for (let i = 0; i < linii1; i++) {
+            const linie = [];
+            for (let j = 0; j < coloane1; j++) {
+              const input = document.createElement("input");
+              input.type = "number";
+              input.name = "matrice1[" + i + "][" + j + "]";
+              matriceInput.appendChild(input);
+              linie.push(input);
+            }
+            matriceInput.appendChild(document.createElement("br"));
+            matrice1.push(linie);
+          }
+
+          matriceInput.appendChild(document.createElement("br"));
+
+          matrice2 = [];
+          const matrice2Label = document.createElement("h2");
+          matrice2Label.innerText = "Matrice 2";
+          matriceInput.appendChild(matrice2Label);
+
+          for (let i = 0; i < linii2; i++) {
+            const linie = [];
+            for (let j = 0; j < coloane2; j++) {
+              const input = document.createElement("input");
+              input.type = "number";
+              input.name = "matrice2[" + i + "][" + j + "]";
+              matriceInput.appendChild(input);
+              linie.push(input);
+            }
+            matriceInput.appendChild(document.createElement("br"));
+            matrice2.push(linie);
+          }
+
+          matriceInput.appendChild(document.createElement("br"));
+        }
+
+        function AdunaMatrice(data) {
+          const linii1 = matrice1.length;
+          const coloane1 = matrice1[0].length;
+          const linii2 = matrice2.length;
+          const coloane2 = matrice2[0].length;
+
+          const matriceInput = document.getElementById("matrice-input");
+
+          // Add matrices
+          
+          const result = [];
+          const resultLabel = document.createElement("h2");
+          resultLabel.innerText = "Rezultat";
+          matriceInput.appendChild(resultLabel);
+
+          for (let i = 0; i < linii1; i++) {
+            const linie = [];
+            for (let j = 0; j < coloane1; j++) {
+              const sum = Number(matrice1[i][j].value) + Number(matrice2[i][j].value);
+              const input = document.createElement("input");
+              input.type = "number";
+              input.value = sum;
+              input.disabled = true;
+              linie.push(input);
+              matriceInput.appendChild(input);
+            }
+            matriceInput.appendChild(document.createElement("br"));
+            result.push(linie);
+          }
+        }
+        </script>
+    </div>
+    <!-- Div with hidden attribute for multiplication -->
+    <div id="inmultire" class="hidden">
+      <form>
+        <label for="mlinii1">Matrice 1: Linii:</label>
+        <input type="number" id="mlinii1" name="mlinii1" min="1">
+        <label for="mcoloane1">Matrice 1: Coloane:</label>
+        <input type="number" id="mcoloane1" name="mcoloane1" min="1"><br>
+        <label for="mlinii2">Matrice 2: Linii:</label>
+        <input type="number" id="mlinii2" name="mlinii2" min="1">
+        <label for="mcoloane2">Matrice 2: Coloane:</label>
+        <input type="number" id="mcoloane2" name="mcoloane2" min="1"><br>
+        <button type="button" onclick="creeazaMMatrice()">Creeaza Matrice</button>
+        <button type="button" onclick="InmultesteMatrice()">Calculeaza</button>
+      </form>
+      <div id="matrice-input-inmultire"></div>
+      <script>
+        let mmatrice1, mmatrice2, mresult, mlinii1, mcoloane1, mlinii2, mcoloane2;
+        function creeazaMMatrice(data) {
+          const mlinii1 = document.getElementById("mlinii1").value;
+          const mcoloane1 = document.getElementById("mcoloane1").value;
+          const mlinii2 = document.getElementById("mlinii2").value;
+          const mcoloane2 = document.getElementById("mcoloane2").value;
+
+          if (mlinii1 < 1 || mcoloane1 < 1 || mlinii2 < 1 || mcoloane2 < 1) {
+            alert("Toate dimensiunile matricelor trebuie sa fie mai mari de 0.");
+            return;
+          }
+          if (mlinii1 !== mcoloane2) {
+            alert("Numarul de linii din matricea 1 trebuie sa fie egal cu numarul de coloane din matricea 2.");
+            return;
+          }
+          
+          const mmatriceInput = document.getElementById("matrice-input-inmultire");
+          mmatriceInput.innerHTML = "";
+        
+          mmatrice1 = [];
+          const mmatrice1Label = document.createElement("h2");
+          mmatrice1Label.innerText = "Matrice 1";
+          mmatriceInput.appendChild(mmatrice1Label);
+        
+          for (let i = 0; i < mlinii1; i++) {
+            const mlinie = [];
+            for (let j = 0; j < mcoloane1; j++) {
+              const input = document.createElement("input");
+              input.type = "number";
+              input.name = "mmatrice1[" + i + "][" + j + "]";
+              mmatriceInput.appendChild(input);
+              mlinie.push(input);
+            }
+            mmatriceInput.appendChild(document.createElement("br"));
+            mmatrice1.push(mlinie);
+          }
+        
+          mmatriceInput.appendChild(document.createElement("br"));
+        
+          mmatrice2 = [];
+          const mmatrice2Label = document.createElement("h2");
+          mmatrice2Label.innerText = "Matrice 2";
+          mmatriceInput.appendChild(mmatrice2Label);
+        
+          for (let i = 0; i < mlinii2; i++) {
+            const mlinie = [];
+            for (let j = 0; j < mcoloane2; j++) {
+              const input = document.createElement("input");
+              input.type = "number";
+              input.name = "mmatrice2[" + i + "][" + j + "]";
+              mmatriceInput.appendChild(input);
+              mlinie.push(input);
+            }
+            mmatriceInput.appendChild(document.createElement("br"));
+            mmatrice2.push(mlinie);
+          }
+        
+          mmatriceInput.appendChild(document.createElement("br"));
+          console.log(mmatriceInput);
+        }
+        
+        function InmultesteMatrice(data) {
+          const mlinii1 = mmatrice1.length;
+          const mcoloane1 = mmatrice1[0].length;
+          const mlinii2 = mmatrice2.length;
+          const mcoloane2 = mmatrice2[0].length;
+          console.log(mmatrice1);
+          console.log(mmatrice2);
+        
+          const mmatriceInput = document.getElementById("matrice-input-inmultire");
+        
+          // Multiply matrices
+          const mresult = [];
+          const mresultLabel = document.createElement("h2");
+          mresultLabel.innerText = "Rezultat";
+          mmatriceInput.appendChild(mresultLabel);
+        
+          for (let i = 0; i < mlinii1; i++) {
+            const mlinie = [];
+            for (let j = 0; j < mcoloane2; j++) {
+              let sum = 0;
+              for (let k = 0; k < mcoloane1; k++) {
+                sum += Number(mmatrice1[i][k].value) * Number(mmatrice2[k][j].value);
+              }
+              const input = document.createElement("input");
+              input.type = "number";
+              input.value = sum;
+              input.disabled = true;
+              mlinie.push(input);
+              mmatriceInput.appendChild(input);
+            }
+            mmatriceInput.appendChild(document.createElement("br"));
+            mresult.push(mlinie);
+          }
+          console.log(mresult);
+        }
+        </script>
+        
+    </div>
+   
+    <!-- Div with hidden attribute for Transpune -->
+    <div id="transpunere" class="hidden">
+      <form>
+        <label for="tlinii">Matrice: Linii:</label>
+        <input type="number" id="tlinii" name="tlinii" min="1">
+        <label for="tcoloane">Matrice: Coloane:</label>
+        <input type="number" id="tcoloane" name="tcoloane" min="1"><br><br>
+        <button type="button" onclick="creeazaTMatrice()">Creeaza matrice</button>
+        <button type="button" onclick="TranspuneMatrice()">Calculeaza</button>
+      </form>
+      <div id="matrice-input-transpunere"></div>
+      <script>
+        let tmatrice, tresult, tlinii, tcoloane;
+        function creeazaTMatrice() {
+          tlinii = document.getElementById("tlinii").value;
+          tcoloane = document.getElementById("tcoloane").value;
+          console.log(tlinii);
+          console.log(tcoloane);
+
+          if (tlinii < 1 || tcoloane < 1) {
+            alert("Toate dimensiunile matricelor trebuie sa fie mai mari de 0.");
+            return;
+          }
+
+          const tmatriceInput = document.getElementById("matrice-input-transpunere");
+          tmatriceInput.innerHTML = "";
+        
+          tmatrice = [];
+          const tmatriceLabel = document.createElement("h2");
+          tmatriceLabel.innerText = "Matrice";
+          tmatriceInput.appendChild(tmatriceLabel);
+        
+          for (let i = 0; i < tlinii; i++) {
+            const tlinie = [];
+            for (let j = 0; j < tcoloane; j++) {
+              const input = document.createElement("input");
+              input.type = "number";
+              input.name = "tmatrice[" + i + "][" + j + "]";
+              tmatriceInput.appendChild(input);
+              tlinie.push(input);
+            }
+            tmatriceInput.appendChild(document.createElement("br"));
+            tmatrice.push(tlinie);
+          }
+        
+          tmatriceInput.appendChild(document.createElement("br"));
+          console.log(tmatriceInput);
+        }
+
+        function TranspuneMatrice() {
+          const tlinii = tmatrice.length;
+          const tcoloane = tmatrice[0].length;
+          console.log(tmatrice);
+          
+          const tmatriceInput = document.getElementById("matrice-input-transpunere");
+
+          const tresult = [];
+          const tresultLabel = document.createElement("h2");
+          tresultLabel.innerText = "Rezultat";
+          tmatriceInput.appendChild(tresultLabel);
+
+          for (let i = 0; i < tcoloane; i++) {
+            const tlinie = [];
+            for (let j = 0; j < tlinii; j++) {
+              let val = Number(tmatrice[j][i].value);
+              const input = document.createElement("input");
+              input.type = "number";
+              input.value = val;
+              input.disabled = true;
+              tlinie.push(input);
+              tmatriceInput.appendChild(input);
+            }
+            tmatriceInput.appendChild(document.createElement("br"));
+            tresult.push(tlinie);
+          }
+          console.log(tresult);
+        }
+        </script>
+
+    </div>
+    <!-- HTML Script pentru a alterna care div-uri sunt ascunse, pentru a afisa operatia selectata -->
+    <script>
+      const operationselect = document.getElementById("operatie-selectare");
+      const add = document.getElementById("adunare");
+      const multiply = document.getElementById("inmultire");
+      const trans = document.getElementById("transpunere");
+
+      operationselect.addEventListener("change", function() {
+        if (operationselect.value === "Adunare") {
+          add.classList.remove("hidden");
+          multiply.classList.add("hidden");
+          trans.classList.add("hidden");
+        }
+        else if (operationselect.value === "Inmultire") {
+          add.classList.add("hidden");
+          multiply.classList.remove("hidden");
+          trans.classList.add("hidden");
+        } 
+        else if (operationselect.value === "Transpunere") {
+          add.classList.add("hidden");
+          multiply.classList.add("hidden");
+          trans.classList.remove("hidden");
+        }
+        else {
+          add.classList.add("hidden");
+          multiply.classList.add("hidden");
+          trans.classList.add("hidden");
+        }
+      });
+    </script>
+  </section>
+  <footer>
+    <p>Creat de Chiriac Mihai Ciprian</p>
+  </footer>
+</body>
+</html>
